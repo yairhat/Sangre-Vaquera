@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Sangre Vaquera — Tradición con alma premium</title>
+<meta name="description" content="Sangre Vaquera — botas, sombreros y cuero de autor. Tradición vaquera con alma premium desde Chiconcuac." />
+
+<!-- Fonts: serif editorial + sans discreto -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet" />
+
+<!-- Tailwind -->
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          paper: '#F3EDE3',
+          ink: '#2B211A',
+          leather: '#8B5E34',
+          sangre: '#6E1423',
+          gold: '#B08D57',
+          sand: '#E4D9C6',
+        },
+        fontFamily: {
+          serif: ['"Cormorant Garamond"', 'serif'],
+          sans: ['Jost', 'sans-serif'],
+        },
+      },
+    },
+  };
+</script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lenis/1.1.13/lenis.min.js"></script>
+
+<style>
+  html { -webkit-font-smoothing: antialiased; }
+  body { background: #F3EDE3; color: #2B211A; font-family: 'Jost', sans-serif; overflow-x: hidden; }
+  ::selection { background: #6E1423; color: #F3EDE3; }
+
+  /* Warm paper grain overlay */
+  .grain { position: fixed; inset: 0; z-index: 1; pointer-events: none; opacity: 0.05; mix-blend-mode: multiply;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
+
+  .img-ph { position: relative; overflow: hidden; background: linear-gradient(135deg,#e4d9c6,#d8c9b2); }
+  .img-ph img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; filter: sepia(18%) saturate(105%) contrast(1.02); transition: transform 1.1s cubic-bezier(.16,1,.3,1), filter .8s ease; }
+  .img-ph:hover img { transform: scale(1.05); filter: sepia(0%) saturate(105%); }
+  .img-ph .ph-label { position: absolute; bottom: 10px; left: 12px; font-size: 10px; letter-spacing: .18em; color: rgba(43,33,26,.35); text-transform: uppercase; z-index: 0; }
+
+  .reveal { opacity: 0; transform: translateY(34px); }
+  .rule { height: 1px; background: linear-gradient(to right, transparent, #B08D57, transparent); }
+
+  .link-gold { position: relative; }
+  .link-gold::after { content: ''; position: absolute; left: 0; bottom: -4px; width: 0; height: 1px; background: #6E1423; transition: width .4s cubic-bezier(.16,1,.3,1); }
+  .link-gold:hover::after { width: 100%; }
+
+  /* Category index hover-preview (desktop) */
+  #indexPreview { position: fixed; top: 0; left: 0; width: 300px; height: 380px; z-index: 40; pointer-events: none;
+    opacity: 0; transform: translate(-50%, -50%) scale(.96); transition: opacity .4s ease, transform .4s ease; overflow: hidden; }
+  #indexPreview img { width: 100%; height: 100%; object-fit: cover; filter: sepia(15%); }
+  #indexPreview.on { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  .idx-row { transition: color .4s ease, padding-left .5s cubic-bezier(.16,1,.3,1); }
+  .idx-row:hover { color: #6E1423; padding-left: 1.5rem; }
+  @media (max-width: 900px) { #indexPreview { display: none; } }
+
+  .dropcap::first-letter { font-family: 'Cormorant Garamond', serif; font-size: 4.5em; line-height: .8; float: left; padding-right: .12em; color: #6E1423; font-weight: 500; }
+</style>
+</head>
+<body class="font-sans relative">
+
+<div class="grain"></div>
+<div id="indexPreview"><img id="indexPreviewImg" src="" alt="" /></div>
+
+<!-- ============ NAV ============ -->
+<header id="nav" class="fixed top-0 left-0 w-full z-50 transition-all duration-500">
+  <div class="max-w-[1500px] mx-auto px-5 md:px-10 h-24 flex items-center justify-between">
+    <nav class="hidden md:flex items-center gap-8 text-[12px] tracking-[0.2em] uppercase text-ink/70 flex-1">
+      <a href="#herencia" class="link-gold" data-es="Herencia" data-en="Heritage">Herencia</a>
+      <a href="#coleccion" class="link-gold" data-es="Colección" data-en="Collection">Colección</a>
+      <a href="#oficio" class="link-gold" data-es="Oficio" data-en="Craft">Oficio</a>
+    </nav>
+
+    <a href="#top" class="font-serif text-2xl md:text-[26px] tracking-[0.08em] text-ink text-center flex-1">Sangre Vaquera</a>
+
+    <div class="flex items-center gap-6 flex-1 justify-end">
+      <button id="langToggle" class="text-[12px] tracking-[0.18em] text-ink/60 hover:text-ink transition-colors">
+        <span id="langES" class="text-ink">ES</span><span class="text-ink/40"> · </span><span id="langEN" class="text-ink/40">EN</span>
+      </button>
+      <a href="#sucursal" class="hidden md:block text-[12px] tracking-[0.2em] uppercase text-ink/70 link-gold" data-es="Sucursal" data-en="Store">Sucursal</a>
+    </div>
+  </div>
+</header>
+
+<main id="top" class="relative z-10">
+
+<!-- ============ HERO (editorial, magazine cover) ============ -->
+<section class="min-h-[100svh] flex flex-col justify-center pt-28 pb-14">
+  <div class="max-w-[1500px] mx-auto px-5 md:px-10 w-full">
+    <div class="flex items-center justify-between text-[11px] tracking-[0.3em] uppercase text-leather mb-8 reveal">
+      <span data-es="Est. Chiconcuac" data-en="Est. Chiconcuac">Est. Chiconcuac</span>
+      <span data-es="Vol. 01 — 2026" data-en="Vol. 01 — 2026">Vol. 01 — 2026</span>
+    </div>
+
+    <div class="grid md:grid-cols-12 gap-8 items-center">
+      <div class="md:col-span-7">
+        <h1 class="font-serif font-medium leading-[0.92] tracking-tight text-[15vw] md:text-[9.5vw]">
+          <span class="block reveal" data-es="Tradición" data-en="Tradition">Tradición</span>
+          <span class="block italic reveal" style="color:#6E1423;" data-es="hecha cuero." data-en="turned leather.">hecha cuero.</span>
+        </h1>
+        <p class="mt-8 max-w-[40ch] text-ink/70 text-lg leading-relaxed reveal"
+           data-es="Botas, sombreros y piezas de autor donde lo vaquero se vuelve elegancia. Una herencia que se lleva con orgullo."
+           data-en="Boots, hats and signature pieces where the cowboy becomes elegance. A heritage worn with pride.">
+          Botas, sombreros y piezas de autor donde lo vaquero se vuelve elegancia. Una herencia que se lleva con orgullo.
+        </p>
+      </div>
+      <div class="md:col-span-5">
+        <div class="img-ph aspect-[3/4] reveal">
+          <img data-fallback="sv-hero" src="https://images.unsplash.com/photo-1520006403909-838d6b92c22e?auto=format&fit=crop&w=1000&q=80" alt="" />
+          <span class="ph-label">Placeholder · foto real</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="max-w-[1500px] mx-auto px-5 md:px-10 w-full mt-12">
+    <div class="rule reveal"></div>
+    <p class="text-center text-[11px] tracking-[0.3em] uppercase text-leather mt-4" data-es="Desliza para descubrir" data-en="Scroll to discover">Desliza para descubrir</p>
+  </div>
+</section>
+
+<!-- ============ HERENCIA (numbered chapters) ============ -->
+<section id="herencia" class="max-w-[1500px] mx-auto px-5 md:px-10 py-24 md:py-36">
+  <p class="text-[12px] tracking-[0.3em] uppercase text-leather mb-16 reveal" data-es="La Herencia" data-en="The Heritage">La Herencia</p>
+
+  <div class="space-y-20 md:space-y-28">
+    <div class="grid md:grid-cols-12 gap-6 md:gap-12 items-start">
+      <span class="md:col-span-2 font-serif text-6xl md:text-7xl text-gold reveal">01</span>
+      <h3 class="md:col-span-4 font-serif text-4xl md:text-5xl leading-tight reveal" data-es="Raíces" data-en="Roots">Raíces</h3>
+      <p class="md:col-span-6 text-ink/70 leading-relaxed text-lg reveal dropcap"
+         data-es="Chiconcuac respira textil y oficio desde hace generaciones. De esa tierra nace Sangre Vaquera: una forma de vestir lo regional sin renunciar a la elegancia."
+         data-en="Chiconcuac has breathed textile and craft for generations. From that land Sangre Vaquera is born: a way to wear the regional without giving up elegance.">
+        Chiconcuac respira textil y oficio desde hace generaciones. De esa tierra nace Sangre Vaquera: una forma de vestir lo regional sin renunciar a la elegancia.
+      </p>
+    </div>
+
+    <div class="rule reveal"></div>
+
+    <div class="grid md:grid-cols-12 gap-6 md:gap-12 items-start">
+      <span class="md:col-span-2 font-serif text-6xl md:text-7xl text-gold reveal">02</span>
+      <h3 class="md:col-span-4 font-serif text-4xl md:text-5xl leading-tight reveal" data-es="Oficio" data-en="Craft">Oficio</h3>
+      <p class="md:col-span-6 text-ink/70 leading-relaxed text-lg reveal"
+         data-es="Cada bota y cada sombrero pasa por manos que conocen el cuero. Cortes precisos, costuras que duran, materiales que envejecen con carácter."
+         data-en="Every boot and every hat passes through hands that know leather. Precise cuts, seams that last, materials that age with character.">
+        Cada bota y cada sombrero pasa por manos que conocen el cuero. Cortes precisos, costuras que duran, materiales que envejecen con carácter.
+      </p>
+    </div>
+
+    <div class="rule reveal"></div>
+
+    <div class="grid md:grid-cols-12 gap-6 md:gap-12 items-start">
+      <span class="md:col-span-2 font-serif text-6xl md:text-7xl text-gold reveal">03</span>
+      <h3 class="md:col-span-4 font-serif text-4xl md:text-5xl leading-tight reveal" data-es="Sangre" data-en="Blood">Sangre</h3>
+      <p class="md:col-span-6 text-ink/70 leading-relaxed text-lg reveal"
+         data-es="Lo vaquero no es un disfraz: es identidad. Sangre Vaquera es para quien lleva la tradición en la piel y la porta con orgullo, hoy."
+         data-en="The cowboy is not a costume: it's identity. Sangre Vaquera is for those who carry tradition in their skin and wear it with pride, today.">
+        Lo vaquero no es un disfraz: es identidad. Sangre Vaquera es para quien lleva la tradición en la piel y la porta con orgullo, hoy.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ COLECCIÓN — ÍNDICE con hover-preview ============ -->
+<section id="coleccion" class="bg-ink text-paper py-24 md:py-36 relative z-10">
+  <div class="max-w-[1500px] mx-auto px-5 md:px-10">
+    <div class="flex items-end justify-between mb-12">
+      <h2 class="font-serif text-5xl md:text-7xl reveal" data-es="La Colección" data-en="The Collection">La Colección</h2>
+      <p class="text-[11px] tracking-[0.25em] uppercase text-paper/50 hidden sm:block" data-es="Pasa el cursor" data-en="Hover to preview">Pasa el cursor</p>
+    </div>
+
+    <ul class="border-t border-paper/15">
+      <li class="idx-row border-b border-paper/15 flex items-center justify-between py-7 md:py-9"
+          data-img="https://images.unsplash.com/photo-1608256246200-53e635b5b65f?auto=format&fit=crop&w=800&q=80">
+        <a href="#" class="font-serif text-4xl md:text-6xl">Botas</a>
+        <div class="flex items-center gap-6">
+          <div class="img-ph w-16 h-16 md:hidden"><img data-fallback="sv-c1" src="https://images.unsplash.com/photo-1608256246200-53e635b5b65f?auto=format&fit=crop&w=300&q=80" alt=""/></div>
+          <span class="text-[11px] tracking-[0.25em] uppercase text-paper/40">01</span>
+        </div>
+      </li>
+      <li class="idx-row border-b border-paper/15 flex items-center justify-between py-7 md:py-9"
+          data-img="https://images.unsplash.com/photo-1533055640609-24b498dfd74c?auto=format&fit=crop&w=800&q=80">
+        <a href="#" class="font-serif text-4xl md:text-6xl">Sombreros</a>
+        <div class="flex items-center gap-6">
+          <div class="img-ph w-16 h-16 md:hidden"><img data-fallback="sv-c2" src="https://images.unsplash.com/photo-1533055640609-24b498dfd74c?auto=format&fit=crop&w=300&q=80" alt=""/></div>
+          <span class="text-[11px] tracking-[0.25em] uppercase text-paper/40">02</span>
+        </div>
+      </li>
+      <li class="idx-row border-b border-paper/15 flex items-center justify-between py-7 md:py-9"
+          data-img="https://images.unsplash.com/photo-1517254797898-04edd251bfb3?auto=format&fit=crop&w=800&q=80">
+        <a href="#" class="font-serif text-4xl md:text-6xl" data-es="Cinturones" data-en="Belts">Cinturones</a>
+        <div class="flex items-center gap-6">
+          <div class="img-ph w-16 h-16 md:hidden"><img data-fallback="sv-c3" src="https://images.unsplash.com/photo-1517254797898-04edd251bfb3?auto=format&fit=crop&w=300&q=80" alt=""/></div>
+          <span class="text-[11px] tracking-[0.25em] uppercase text-paper/40">03</span>
+        </div>
+      </li>
+      <li class="idx-row border-b border-paper/15 flex items-center justify-between py-7 md:py-9"
+          data-img="https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?auto=format&fit=crop&w=800&q=80">
+        <a href="#" class="font-serif text-4xl md:text-6xl" data-es="Texanas & Camisas" data-en="Shirts & Texanas">Texanas & Camisas</a>
+        <div class="flex items-center gap-6">
+          <div class="img-ph w-16 h-16 md:hidden"><img data-fallback="sv-c4" src="https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?auto=format&fit=crop&w=300&q=80" alt=""/></div>
+          <span class="text-[11px] tracking-[0.25em] uppercase text-paper/40">04</span>
+        </div>
+      </li>
+    </ul>
+
+    <div class="mt-12">
+      <a href="https://www.instagram.com/sangre.vaquera" target="_blank" rel="noopener"
+         class="group inline-flex items-center gap-3 border border-paper/25 hover:border-gold hover:text-gold transition-colors px-8 py-4 text-[12px] tracking-[0.2em] uppercase">
+        <span data-es="Ver todo en Instagram" data-en="See everything on Instagram">Ver todo en Instagram</span>
+        <span class="group-hover:translate-x-1 transition-transform">→</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ OFICIO — sticky craftsmanship ============ -->
+<section id="oficio" class="max-w-[1500px] mx-auto px-5 md:px-10 py-24 md:py-36">
+  <div class="grid md:grid-cols-2 gap-10 md:gap-20">
+    <div class="md:sticky md:top-28 md:self-start">
+      <p class="text-[12px] tracking-[0.3em] uppercase text-leather mb-8 reveal" data-es="El Oficio" data-en="The Craft">El Oficio</p>
+      <h2 class="font-serif text-5xl md:text-6xl leading-[1.05] mb-8 reveal"
+          data-es="El cuero cuenta la historia." data-en="Leather tells the story.">El cuero cuenta la historia.</h2>
+      <p class="text-ink/70 text-lg leading-relaxed max-w-[42ch] reveal"
+         data-es="Trabajamos pieles nobles que ganan carácter con el uso. La pátina, las costuras a mano y los herrajes son la firma de cada pieza — detalles que solo se aprecian de cerca."
+         data-en="We work noble hides that gain character with use. The patina, hand stitching and hardware are the signature of each piece — details you only appreciate up close.">
+        Trabajamos pieles nobles que ganan carácter con el uso. La pátina, las costuras a mano y los herrajes son la firma de cada pieza — detalles que solo se aprecian de cerca.
+      </p>
+      <div class="mt-10 flex gap-10">
+        <div class="reveal"><p class="font-serif text-5xl text-sangre">100%</p><p class="text-[11px] tracking-[0.2em] uppercase text-ink/50 mt-1" data-es="Cuero genuino" data-en="Genuine leather">Cuero genuino</p></div>
+        <div class="reveal"><p class="font-serif text-5xl text-sangre">1×1</p><p class="text-[11px] tracking-[0.2em] uppercase text-ink/50 mt-1" data-es="Hecho a mano" data-en="Handmade">Hecho a mano</p></div>
+      </div>
+    </div>
+    <div class="space-y-6">
+      <div class="img-ph aspect-[4/5] reveal"><img data-fallback="sv-o1" src="https://images.unsplash.com/photo-1560769629-975ec94e6a86?auto=format&fit=crop&w=900&q=80" alt=""/><span class="ph-label">Placeholder · detalle cuero</span></div>
+      <div class="img-ph aspect-[4/5] reveal"><img data-fallback="sv-o2" src="https://images.unsplash.com/photo-1595341888016-a392ef81b7de?auto=format&fit=crop&w=900&q=80" alt=""/><span class="ph-label">Placeholder · costura</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ LOOKBOOK offset ============ -->
+<section class="max-w-[1500px] mx-auto px-5 md:px-10 pb-24 md:pb-36">
+  <div class="grid md:grid-cols-12 gap-8 items-end">
+    <div class="md:col-span-7 img-ph aspect-[4/5] reveal"><img data-fallback="sv-l1" src="https://images.unsplash.com/photo-1543087903-1ac2ec7aa8c5?auto=format&fit=crop&w=1200&q=80" alt=""/><span class="ph-label">Placeholder · editorial</span></div>
+    <div class="md:col-span-5">
+      <div class="img-ph aspect-[3/4] mb-8 reveal"><img data-fallback="sv-l2" src="https://images.unsplash.com/photo-1520006403909-838d6b92c22e?auto=format&fit=crop&w=900&q=80" alt=""/><span class="ph-label">Placeholder</span></div>
+      <p class="font-serif italic text-3xl md:text-4xl leading-snug text-leather reveal"
+         data-es="“Se nace vaquero, pero se viste con orgullo.”" data-en="“You're born a cowboy, but you dress with pride.”">“Se nace vaquero, pero se viste con orgullo.”</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SUCURSAL ============ -->
+<section id="sucursal" class="border-t border-ink/10">
+  <div class="max-w-[1500px] mx-auto px-5 md:px-10 py-24 md:py-32 grid md:grid-cols-2 gap-12 items-center">
+    <div class="img-ph aspect-[4/3] order-2 md:order-1 reveal"><img data-fallback="sv-store" src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=1200&q=80" alt=""/><span class="ph-label">Placeholder · fachada / mapa</span></div>
+    <div class="order-1 md:order-2">
+      <p class="text-[12px] tracking-[0.3em] uppercase text-leather mb-8 reveal" data-es="Sucursal" data-en="Store">Sucursal</p>
+      <h2 class="font-serif text-6xl md:text-7xl leading-none mb-8 reveal" data-es="Visítanos" data-en="Visit us">Visítanos</h2>
+      <div class="space-y-4 text-ink/70 reveal">
+        <p class="text-lg">Chiconcuac de Juárez, Estado de México.</p>
+        <p class="text-ink/40 text-sm">[ Dirección exacta por confirmar ]</p>
+        <p class="text-sm"><span class="text-ink" data-es="Horario:" data-en="Hours:">Horario:</span> Lun–Dom · 10:00 – 19:00</p>
+      </div>
+      <a href="https://www.instagram.com/sangre.vaquera" target="_blank" rel="noopener"
+         class="mt-10 inline-flex items-center gap-3 bg-ink text-paper px-8 py-4 text-[12px] tracking-[0.2em] uppercase hover:bg-sangre transition-colors">
+        <span data-es="Escríbenos" data-en="Message us">Escríbenos</span> <span>→</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PUENTE → YUGO (dark teaser, reverse) ============ -->
+<section class="relative overflow-hidden" style="background:#0A0A0A; color:#FAFAFA;">
+  <div class="max-w-[1500px] mx-auto px-5 md:px-10 py-24 md:py-32 flex flex-col items-center text-center">
+    <p class="text-[11px] tracking-[0.35em] uppercase mb-6" style="color:#D4FF00;" data-es="Otro estilo · Misma familia" data-en="Another style · Same family">Otro estilo · Misma familia</p>
+    <h2 class="font-sans font-medium uppercase text-[10vw] md:text-[5vw] leading-[0.95] tracking-tight mb-8">
+      <span data-es="¿Buscas algo más urbano?" data-en="Want something more urban?">¿Buscas algo más urbano?</span><br/>
+      <span style="color:#D4FF00;">YUGO Brand</span>
+    </h2>
+    <p class="max-w-[42ch] text-base md:text-lg mb-10 text-white/60"
+       data-es="Nuestra otra casa: streetwear de tiraje corto, crudo y contemporáneo."
+       data-en="Our other house: short-run streetwear, raw and contemporary.">
+      Nuestra otra casa: streetwear de tiraje corto, crudo y contemporáneo.
+    </p>
+    <a href="../Yugo Brand/index.html"
+       class="group inline-flex items-center gap-3 px-8 py-4 text-[13px] tracking-[0.14em] uppercase font-medium transition-colors"
+       style="background:#FAFAFA; color:#0A0A0A;"
+       onmouseover="this.style.background='#D4FF00'" onmouseout="this.style.background='#FAFAFA'">
+      <span data-es="Conoce YUGO" data-en="Discover YUGO">Conoce YUGO</span>
+      <span class="group-hover:translate-x-1 transition-transform">→</span>
+    </a>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer class="bg-paper border-t border-ink/10">
+  <div class="max-w-[1500px] mx-auto px-5 md:px-10 pt-20 pb-10">
+    <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-8 border-b border-ink/10 pb-12">
+      <h2 class="font-serif text-6xl md:text-8xl leading-none">Sangre<br/><span class="italic" style="color:#6E1423;">Vaquera</span></h2>
+      <a href="https://www.instagram.com/sangre.vaquera" target="_blank" rel="noopener"
+         class="group inline-flex items-center gap-3 border border-ink/20 hover:border-sangre hover:text-sangre transition-colors px-8 py-4 text-[12px] tracking-[0.2em] uppercase self-start">
+        @sangre.vaquera <span class="group-hover:translate-x-1 transition-transform">→</span>
+      </a>
+    </div>
+    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 pt-8 text-[11px] tracking-[0.18em] uppercase text-ink/50">
+      <p>© <span id="year"></span> Sangre Vaquera · Chiconcuac, México</p>
+      <p class="text-ink/40" data-es="Parte de la familia — Sangre Vaquera · YUGO" data-en="Part of the family — Sangre Vaquera · YUGO">Parte de la familia — Sangre Vaquera · YUGO</p>
+    </div>
+  </div>
+</footer>
+
+</main>
+
+<script>
+  /* ---------- Image fallback ---------- */
+  document.querySelectorAll('.img-ph img').forEach((img) => {
+    img.addEventListener('error', function () {
+      if (this.dataset.tried) { this.style.opacity = 0; return; }
+      this.dataset.tried = '1';
+      const seed = this.dataset.fallback || Math.random().toString(36).slice(2);
+      this.src = 'https://picsum.photos/seed/' + seed + '/900/1100?sepia';
+    });
+  });
+
+  /* ---------- Language toggle ---------- */
+  (function () {
+    let lang = 'es';
+    const es = document.getElementById('langES'), en = document.getElementById('langEN');
+    function apply(l) {
+      lang = l; document.documentElement.lang = l;
+      document.querySelectorAll('[data-es]').forEach((el) => {
+        const v = el.getAttribute('data-' + l);
+        if (v !== null) el.textContent = v;
+      });
+      es.className = l === 'es' ? 'text-ink' : 'text-ink/40';
+      en.className = l === 'en' ? 'text-ink' : 'text-ink/40';
+    }
+    document.getElementById('langToggle').addEventListener('click', () => apply(lang === 'es' ? 'en' : 'es'));
+    apply('es');
+  })();
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  /* ---------- Category index hover-preview ---------- */
+  (function () {
+    if (window.matchMedia('(max-width: 900px)').matches) return;
+    const box = document.getElementById('indexPreview');
+    const img = document.getElementById('indexPreviewImg');
+    document.querySelectorAll('.idx-row').forEach((row) => {
+      row.addEventListener('mouseenter', () => { img.src = row.dataset.img; box.classList.add('on'); });
+      row.addEventListener('mouseleave', () => box.classList.remove('on'));
+    });
+    window.addEventListener('mousemove', (e) => {
+      box.style.left = e.clientX + 'px';
+      box.style.top = e.clientY + 'px';
+    });
+  })();
+
+  /* ---------- Smooth scroll + GSAP reveals ---------- */
+  window.addEventListener('load', () => {
+    let lenis;
+    if (window.Lenis) {
+      lenis = new Lenis({ duration: 1.2, smoothWheel: true });
+      function raf(t) { lenis.raf(t); requestAnimationFrame(raf); }
+      requestAnimationFrame(raf);
+    }
+    document.querySelectorAll('a[href^="#"]').forEach((a) => {
+      a.addEventListener('click', (e) => {
+        const id = a.getAttribute('href');
+        if (id.length > 1) {
+          const t = document.querySelector(id);
+          if (t && lenis) { e.preventDefault(); lenis.scrollTo(t, { offset: -20 }); }
+        }
+      });
+    });
+
+    if (window.gsap && window.ScrollTrigger) {
+      gsap.registerPlugin(ScrollTrigger);
+      if (lenis) lenis.on('scroll', ScrollTrigger.update);
+      gsap.utils.toArray('.reveal').forEach((el) => {
+        gsap.to(el, { opacity: 1, y: 0, duration: 1.1, ease: 'power3.out',
+          scrollTrigger: { trigger: el, start: 'top 90%' } });
+      });
+      const nav = document.getElementById('nav');
+      ScrollTrigger.create({ start: 'top -60', onUpdate: (self) => {
+        if (self.scroll() > 60) nav.classList.add('bg-paper/85','backdrop-blur','border-b','border-ink/10');
+        else nav.classList.remove('bg-paper/85','backdrop-blur','border-b','border-ink/10');
+      }});
+    } else {
+      document.querySelectorAll('.reveal').forEach((el) => { el.style.opacity = 1; el.style.transform = 'none'; });
+    }
+  });
+</script>
+</body>
+</html>
