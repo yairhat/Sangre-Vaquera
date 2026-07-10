@@ -32,14 +32,7 @@
   .grain { position: fixed; inset: 0; z-index: 2; pointer-events: none; opacity: 0.055; mix-blend-mode: multiply;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
 
-  /* Cursor crosshair (desktop) — mira vaquera que gira a × en hover */
-  .sv-cursor { position: fixed; top: 0; left: 0; z-index: 9999; pointer-events: none; width: 24px; height: 24px; transform: translate(-50%,-50%) rotate(0deg); transition: width .25s ease, height .25s ease, transform .3s ease; }
-  .sv-cursor::before, .sv-cursor::after { content: ''; position: absolute; background: #B08D57; }
-  .sv-cursor::before { left: 50%; top: 0; width: 1.5px; height: 100%; transform: translateX(-50%); }
-  .sv-cursor::after { top: 50%; left: 0; height: 1.5px; width: 100%; transform: translateY(-50%); }
-  .sv-cursor.grow { width: 40px; height: 40px; transform: translate(-50%,-50%) rotate(45deg); }
-  @media (max-width: 900px) { .sv-cursor { display: none; } }
-  @media (min-width: 901px) { body, a, button, .hoverable { cursor: none; } }
+  /* Cursor natural del sistema */
 
   /* Marco tipo hoja (Herencia) */
   .paper-frame { border: 1px solid rgba(43,33,26,.4); position: relative; }
@@ -78,9 +71,6 @@
 <body class="font-sans relative">
 
 <div class="grain"></div>
-
-<!-- Cursor -->
-<div class="sv-cursor" id="svCursor"></div>
 
 <!-- ============ NAV VERTICAL (desktop) ============ -->
 <aside class="hidden md:flex fixed left-0 top-0 h-screen w-[72px] z-40 flex-col items-center justify-between py-8 border-r border-ink/15 bg-paper/70 backdrop-blur-sm">
@@ -305,16 +295,9 @@
       <div class="img-ph aspect-[3/4] hoverable"><img data-fallback="sv-lb5" src="https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?auto=format&fit=crop&w=900&q=80" alt=""/></div>
       <figcaption class="flex items-center justify-between mt-3 text-[11px] tracking-[0.2em] uppercase text-ink/60"><span data-es="Texanas" data-en="Shirts">Texanas</span><span class="text-leather">FW26</span></figcaption>
     </figure>
-    <figure class="reveal relative">
+    <figure class="reveal">
       <div class="img-ph aspect-[3/4] hoverable"><img data-fallback="sv-lb6" src="https://images.unsplash.com/photo-1520006403909-838d6b92c22e?auto=format&fit=crop&w=900&q=80" alt=""/></div>
       <figcaption class="flex items-center justify-between mt-3 text-[11px] tracking-[0.2em] uppercase text-ink/60"><span data-es="Retrato" data-en="Portrait">Retrato</span><span class="text-leather">FW26</span></figcaption>
-      <div class="badge-sticker absolute z-20 -top-8 -right-3 hidden sm:grid">
-        <svg viewBox="0 0 200 200" class="badge-svg">
-          <defs><path id="bp" d="M100,100 m-74,0 a74,74 0 1,1 148,0 a74,74 0 1,1 -148,0"/></defs>
-          <text><textPath href="#bp" startOffset="0" class="badge-text">Sangre Vaquera · Hecho a mano · Chiconcuac · </textPath></text>
-        </svg>
-        <span class="badge-star">✳</span>
-      </div>
     </figure>
   </div>
 </section>
@@ -346,22 +329,22 @@
 </section>
 
 <!-- ============ PUENTE → YUGO ============ -->
-<section class="relative z-10 overflow-hidden" style="background:#0A0A0A; color:#FAFAFA;">
+<section class="relative z-10 overflow-hidden border-t border-ink/10" style="background:#E7DCC6; color:#2B211A;">
   <div class="max-w-[1500px] mx-auto px-6 md:px-16 py-24 md:py-32 flex flex-col items-center text-center">
-    <p class="text-[11px] tracking-[0.35em] uppercase mb-6" style="color:#C9E27A;" data-es="Otro estilo · Misma familia" data-en="Another style · Same family">Otro estilo · Misma familia</p>
+    <p class="text-[11px] tracking-[0.35em] uppercase mb-6 text-leather" data-es="Otro estilo · Misma familia" data-en="Another style · Same family">Otro estilo · Misma familia</p>
     <h2 class="text-[10vw] md:text-[5vw] leading-[0.95] tracking-tight mb-8" style="font-family:'Playfair Display', Georgia, serif;">
       <span data-es="¿Buscas algo más urbano?" data-en="Want something more urban?">¿Buscas algo más urbano?</span><br/>
-      <span class="italic" style="color:#C9E27A;">Yugo Brand</span>
+      <span class="italic" style="color:#2B211A;">Yugo Brand</span>
     </h2>
-    <p class="max-w-[42ch] text-base md:text-lg mb-10 text-white/60"
+    <p class="max-w-[42ch] text-base md:text-lg mb-10 text-ink/60"
        data-es="Nuestra otra casa: streetwear de tiraje corto, crudo y contemporáneo."
        data-en="Our other house: short-run streetwear, raw and contemporary.">
       Nuestra otra casa: streetwear de tiraje corto, crudo y contemporáneo.
     </p>
     <a href="../Yugo Brand/index.html"
        class="group inline-flex items-center gap-3 px-8 py-4 text-[13px] tracking-[0.14em] uppercase font-medium transition-colors hoverable"
-       style="background:#FAFAFA; color:#0A0A0A;"
-       onmouseover="this.style.background='#C9E27A'" onmouseout="this.style.background='#FAFAFA'">
+       style="background:#0A0A0A; color:#FAFAFA;"
+       onmouseover="this.style.background='#C9E27A';this.style.color='#0A0A0A'" onmouseout="this.style.background='#0A0A0A';this.style.color='#FAFAFA'">
       <span data-es="Conoce YUGO" data-en="Discover YUGO">Conoce YUGO</span>
       <span class="group-hover:translate-x-1 transition-transform">→</span>
     </a>
@@ -455,16 +438,7 @@
     menu.querySelectorAll('a').forEach((a) => a.addEventListener('click', shut));
   })();
 
-  /* ---------- Cursor crosshair (desktop) ---------- */
-  (function () {
-    if (window.matchMedia('(max-width: 900px)').matches) return;
-    const c = document.getElementById('svCursor');
-    window.addEventListener('mousemove', (e) => { c.style.left = e.clientX + 'px'; c.style.top = e.clientY + 'px'; });
-    document.querySelectorAll('a, button, .hoverable').forEach((el) => {
-      el.addEventListener('mouseenter', () => c.classList.add('grow'));
-      el.addEventListener('mouseleave', () => c.classList.remove('grow'));
-    });
-  })();
+  /* Cursor natural del sistema (sin cursor personalizado) */
 
   /* ---------- Smooth scroll + GSAP ---------- */
   window.addEventListener('load', () => {
