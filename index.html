@@ -66,6 +66,37 @@
 
   /* Paneles de colección (apilado sticky) */
   .cat-panel { position: sticky; top: 0; height: 100svh; width: 100%; overflow: hidden; }
+
+  /* ============ TIENDA / SHOP ============ */
+  #tienda { background:#F3EDE3; }
+  .shop-card { cursor:pointer; }
+  .shop-card .img-ph { aspect-ratio:3/4; }
+  .shop-sold-badge { position:absolute; top:10px; left:10px; z-index:2; background:#2B211A; color:#F3EDE3; font-size:10px; letter-spacing:.18em; text-transform:uppercase; padding:5px 9px; }
+  .shop-card.is-sold .img-ph img { filter:sepia(18%) grayscale(60%) opacity(.7); }
+  .shop-demo-tag { font-size:10px; letter-spacing:.14em; text-transform:uppercase; color:rgba(43,33,26,.4); }
+
+  .shop-backdrop { position:fixed; inset:0; background:rgba(43,33,26,.5); backdrop-filter:blur(3px); z-index:75; opacity:0; pointer-events:none; transition:opacity .4s ease; }
+  .shop-backdrop.is-open { opacity:1; pointer-events:auto; }
+
+  .bag-panel { position:fixed; top:0; right:0; height:100svh; width:min(430px,94vw); background:#F3EDE3; z-index:80; transform:translateX(100%); transition:transform .5s cubic-bezier(.16,1,.3,1); display:flex; flex-direction:column; box-shadow:-24px 0 70px rgba(43,33,26,.22); }
+  .bag-panel.is-open { transform:translateX(0); }
+
+  .pdp-panel { position:fixed; z-index:85; top:50%; left:50%; transform:translate(-50%,-48%) scale(.98); opacity:0; pointer-events:none; width:min(880px,94vw); max-height:92svh; overflow:auto; background:#F3EDE3; transition:opacity .4s ease, transform .4s cubic-bezier(.16,1,.3,1); box-shadow:0 30px 90px rgba(43,33,26,.3); }
+  .pdp-panel.is-open { opacity:1; pointer-events:auto; transform:translate(-50%,-50%) scale(1); }
+
+  .co-panel { position:fixed; z-index:85; top:50%; left:50%; transform:translate(-50%,-48%); opacity:0; pointer-events:none; width:min(920px,95vw); max-height:94svh; overflow:auto; background:#F3EDE3; transition:opacity .4s ease, transform .4s cubic-bezier(.16,1,.3,1); box-shadow:0 30px 90px rgba(43,33,26,.3); }
+  .co-panel.is-open { opacity:1; pointer-events:auto; transform:translate(-50%,-50%); }
+
+  .size-btn { min-width:44px; padding:8px 10px; border:1px solid rgba(43,33,26,.3); font-size:13px; letter-spacing:.05em; transition:all .2s ease; }
+  .size-btn:hover { border-color:#2B211A; }
+  .size-btn.sel { background:#2B211A; color:#F3EDE3; border-color:#2B211A; }
+  .co-input { width:100%; background:transparent; border:1px solid rgba(43,33,26,.28); padding:12px 14px; font-size:14px; color:#2B211A; }
+  .co-input:focus { outline:none; border-color:#6E1423; }
+  .co-input:disabled { background:rgba(43,33,26,.05); color:rgba(43,33,26,.4); }
+
+  #bagBtn { position:fixed; z-index:70; bottom:20px; right:20px; }
+  @media (min-width:768px){ #bagBtn { bottom:28px; right:28px; } }
+  .bag-count { position:absolute; top:-7px; right:-7px; min-width:18px; height:18px; padding:0 4px; border-radius:9999px; background:#6E1423; color:#F3EDE3; font-size:11px; display:grid; place-items:center; }
 </style>
 </head>
 <body class="font-sans relative">
@@ -78,6 +109,7 @@
   <nav class="flex flex-col items-center gap-7 text-[11px] tracking-[0.28em] uppercase text-ink/70">
     <a href="#herencia" class="vlink [writing-mode:vertical-rl] rotate-180 hover:text-sangre transition-colors hoverable" data-es="Herencia" data-en="Heritage">Herencia</a>
     <a href="#coleccion" class="vlink [writing-mode:vertical-rl] rotate-180 hover:text-sangre transition-colors hoverable" data-es="Colección" data-en="Collection">Colección</a>
+    <a href="#tienda" class="vlink [writing-mode:vertical-rl] rotate-180 hover:text-sangre transition-colors hoverable" data-es="Tienda" data-en="Shop">Tienda</a>
     <a href="#oficio" class="vlink [writing-mode:vertical-rl] rotate-180 hover:text-sangre transition-colors hoverable" data-es="Oficio" data-en="Craft">Oficio</a>
     <a href="#sucursal" class="vlink [writing-mode:vertical-rl] rotate-180 hover:text-sangre transition-colors hoverable" data-es="Sucursal" data-en="Store">Sucursal</a>
   </nav>
@@ -105,6 +137,7 @@
   <nav class="flex-1 flex flex-col justify-center gap-1 px-6">
     <a href="#herencia" class="font-serif text-4xl text-ink py-2.5 border-b border-ink/10" data-es="Herencia" data-en="Heritage">Herencia</a>
     <a href="#coleccion" class="font-serif text-4xl text-ink py-2.5 border-b border-ink/10" data-es="Colección" data-en="Collection">Colección</a>
+    <a href="#tienda" class="font-serif text-4xl text-ink py-2.5 border-b border-ink/10" data-es="Tienda" data-en="Shop">Tienda</a>
     <a href="#oficio" class="font-serif text-4xl text-ink py-2.5 border-b border-ink/10" data-es="Oficio" data-en="Craft">Oficio</a>
     <a href="#sucursal" class="font-serif text-4xl text-ink py-2.5" data-es="Sucursal" data-en="Store">Sucursal</a>
   </nav>
@@ -239,6 +272,24 @@
     <div class="img-ph order-1 md:order-2"><img data-fallback="sv-c4" src="https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?auto=format&fit=crop&w=1200&q=80" alt=""/></div>
   </div>
 </section>
+
+<!-- ============ TIENDA / SHOP ============ -->
+<section id="tienda" class="relative z-10 bg-paper max-w-[1500px] mx-auto px-6 md:px-16 py-24 md:py-32">
+  <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-12">
+    <div>
+      <p class="text-[12px] tracking-[0.3em] uppercase text-leather mb-3 reveal" data-es="La Tienda" data-en="The Shop">La Tienda</p>
+      <h2 class="font-serif text-4xl md:text-6xl reveal" data-es="Compra las piezas" data-en="Shop the pieces">Compra las piezas</h2>
+    </div>
+    <p class="font-serif italic text-lg md:text-xl leading-snug text-leather max-w-[34ch] reveal"
+       data-es="Selección de temporada. El inventario se renueva cada semana."
+       data-en="Seasonal selection. Inventory refreshes every week.">Selección de temporada. El inventario se renueva cada semana.</p>
+  </div>
+
+  <div id="shopGrid" class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6"></div>
+
+  <p class="mt-10 text-[11px] tracking-[0.14em] uppercase text-ink/40" data-es="Piezas de ejemplo · demostración del sistema de venta en línea" data-en="Sample items · online store system demo">Piezas de ejemplo · demostración del sistema de venta en línea</p>
+</section>
+
 
 <!-- ============ OFICIO — sticky ============ -->
 <section id="oficio" class="relative z-10 bg-paper max-w-[1500px] mx-auto px-6 md:px-16 py-24 md:py-32">
@@ -404,6 +455,240 @@
 </footer>
 
 </main>
+
+<!-- ============ TIENDA · UI (bolsa, ficha, checkout) ============ -->
+<button id="bagBtn" aria-label="Bolsa" class="hoverable w-12 h-12 rounded-full bg-ink text-paper grid place-items-center shadow-lg hover:bg-sangre transition-colors">
+  <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6 2 3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+  <span id="bagCount" class="bag-count" style="display:none">0</span>
+</button>
+
+<div id="shopBackdrop" class="shop-backdrop"></div>
+
+<!-- Ficha de producto -->
+<div id="pdpPanel" class="pdp-panel">
+  <button data-shopclose class="hoverable absolute top-4 right-4 z-10 w-9 h-9 grid place-items-center text-ink text-xl bg-paper/80">✕</button>
+  <div id="pdpBody" class="grid md:grid-cols-2"></div>
+</div>
+
+<!-- Bolsa lateral -->
+<aside id="bagPanel" class="bag-panel">
+  <div class="flex items-center justify-between h-16 px-6 border-b border-ink/10">
+    <span class="font-serif text-2xl text-ink" data-es="Tu bolsa" data-en="Your bag">Tu bolsa</span>
+    <button data-shopclose class="hoverable text-ink text-xl w-8 h-8" aria-label="Cerrar">✕</button>
+  </div>
+  <div id="bagItems" class="flex-1 overflow-auto px-6 py-4"></div>
+  <div class="border-t border-ink/10 px-6 py-5">
+    <div class="flex items-center justify-between mb-4">
+      <span class="text-[12px] tracking-[0.2em] uppercase text-ink/60" data-es="Subtotal" data-en="Subtotal">Subtotal</span>
+      <span id="bagSubtotal" class="font-serif text-2xl text-ink">$0</span>
+    </div>
+    <button id="goCheckout" class="w-full bg-ink text-paper py-4 text-[12px] tracking-[0.2em] uppercase hover:bg-sangre transition-colors hoverable disabled:opacity-40" data-es="Ir a pagar" data-en="Checkout">Ir a pagar</button>
+  </div>
+</aside>
+
+<!-- Checkout -->
+<div id="coPanel" class="co-panel">
+  <button data-shopclose class="hoverable absolute top-4 right-4 z-10 w-9 h-9 grid place-items-center text-ink text-xl bg-paper/80">✕</button>
+  <div class="grid md:grid-cols-2">
+    <div class="p-7 md:p-10 border-b md:border-b-0 md:border-r border-ink/10">
+      <p class="text-[12px] tracking-[0.3em] uppercase text-leather mb-6" data-es="Datos de envío" data-en="Shipping details">Datos de envío</p>
+      <div class="space-y-4">
+        <input class="co-input" placeholder="Nombre completo" data-es-ph="Nombre completo" data-en-ph="Full name" />
+        <input class="co-input" placeholder="Correo electrónico" data-es-ph="Correo electrónico" data-en-ph="Email" />
+        <input class="co-input" placeholder="Teléfono / WhatsApp" data-es-ph="Teléfono / WhatsApp" data-en-ph="Phone / WhatsApp" />
+        <input class="co-input" placeholder="Dirección de envío" data-es-ph="Dirección de envío" data-en-ph="Shipping address" />
+        <input class="co-input" placeholder="Ciudad y código postal" data-es-ph="Ciudad y código postal" data-en-ph="City and ZIP" />
+      </div>
+      <p class="text-[12px] tracking-[0.3em] uppercase text-leather mt-9 mb-5" data-es="Pago" data-en="Payment">Pago</p>
+      <div class="space-y-4 opacity-70">
+        <input class="co-input" disabled placeholder="Número de tarjeta" data-es-ph="Número de tarjeta" data-en-ph="Card number" />
+        <div class="grid grid-cols-2 gap-4">
+          <input class="co-input" disabled placeholder="MM / AA" />
+          <input class="co-input" disabled placeholder="CVC" />
+        </div>
+      </div>
+      <div class="mt-5 flex items-center gap-2 text-[12px] text-leather">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+        <span data-es="Pago en línea próximamente · seguro y encriptado" data-en="Online payment coming soon · secure & encrypted">Pago en línea próximamente · seguro y encriptado</span>
+      </div>
+    </div>
+    <div class="p-7 md:p-10" style="background:#E4D9C6;">
+      <p class="text-[12px] tracking-[0.3em] uppercase text-leather mb-6" data-es="Resumen del pedido" data-en="Order summary">Resumen del pedido</p>
+      <div id="coItems" class="space-y-4 mb-6"></div>
+      <div class="border-t border-ink/15 pt-5 flex items-center justify-between">
+        <span class="text-[12px] tracking-[0.2em] uppercase text-ink/60" data-es="Total" data-en="Total">Total</span>
+        <span id="coTotal" class="font-serif text-3xl text-ink">$0</span>
+      </div>
+      <button id="payBtn" disabled class="w-full mt-7 bg-ink/40 text-paper py-4 text-[12px] tracking-[0.2em] uppercase cursor-not-allowed" data-es="Pago en línea próximamente" data-en="Online payment coming soon">Pago en línea próximamente</button>
+      <p class="text-center text-[11px] text-ink/45 mt-4" data-es="Demostración · aún no procesa cobros reales" data-en="Demo · does not process real payments yet">Demostración · aún no procesa cobros reales</p>
+    </div>
+  </div>
+</div>
+
+<!-- ============ INVENTARIO (forma de Google Sheet · editar aquí cada semana) ============
+     Cada objeto = una fila de la hoja. Columnas: id, nombre, categoria,
+     precio (MXN), tallas, foto, agotado. Para migrar a Google Sheet real,
+     se reemplaza este arreglo por una lectura del CSV publicado (misma forma). -->
+<script>
+  window.SV_PRODUCTS = [
+    { id:'sv-01', nombre:'Bota Cuervo', categoria:'Botas', precio:2890, tallas:['25','26','27','28','29'], foto:'https://images.unsplash.com/photo-1608256246200-53e635b5b65f?auto=format&fit=crop&w=900&q=80', agotado:false },
+    { id:'sv-02', nombre:'Bota Miel Grabada', categoria:'Botas', precio:3190, tallas:['25','26','27','28'], foto:'https://images.unsplash.com/photo-1638247025967-b4e38f787b76?auto=format&fit=crop&w=900&q=80', agotado:false },
+    { id:'sv-03', nombre:'Sombrero Fieltro Arena', categoria:'Sombreros', precio:1690, tallas:['S','M','L'], foto:'https://images.unsplash.com/photo-1533055640609-24b498dfd74c?auto=format&fit=crop&w=900&q=80', agotado:false },
+    { id:'sv-04', nombre:'Sombrero Nube Negro', categoria:'Sombreros', precio:1890, tallas:['M','L'], foto:'https://images.unsplash.com/photo-1514327605112-b887c0e61c0a?auto=format&fit=crop&w=900&q=80', agotado:true },
+    { id:'sv-05', nombre:'Cinturón Hebilla Plata', categoria:'Cinturones', precio:890, tallas:['90','95','100'], foto:'https://images.unsplash.com/photo-1517254797898-04edd251bfb3?auto=format&fit=crop&w=900&q=80', agotado:false },
+    { id:'sv-06', nombre:'Camisa Vaquera Índigo', categoria:'Texanas & Camisas', precio:1290, tallas:['S','M','L','XL'], foto:'https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?auto=format&fit=crop&w=900&q=80', agotado:false },
+    { id:'sv-07', nombre:'Texana Perla', categoria:'Texanas & Camisas', precio:1490, tallas:['M','L','XL'], foto:'https://images.unsplash.com/photo-1520006403909-838d6b92c22e?auto=format&fit=crop&w=900&q=80', agotado:false },
+    { id:'sv-08', nombre:'Cinturón Piel Cruda', categoria:'Cinturones', precio:990, tallas:['90','95','100','105'], foto:'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=900&q=80', agotado:false }
+  ];
+</script>
+
+<!-- ============ TIENDA · lógica ============ -->
+<script>
+(function(){
+  const PRODUCTS = window.SV_PRODUCTS || [];
+  const byId = id => PRODUCTS.find(p => p.id === id);
+  const money = n => new Intl.NumberFormat('es-MX',{style:'currency',currency:'MXN',maximumFractionDigits:0}).format(n);
+  const curLang = () => (document.documentElement.lang === 'en' ? 'en' : 'es');
+  const T = {
+    es:{ add:'Agregar a la bolsa', pickSize:'Elige tu talla', sold:'Agotado', empty:'Tu bolsa está vacía', talla:'Talla', quitar:'Quitar', demo:'Pieza de ejemplo' },
+    en:{ add:'Add to bag', pickSize:'Choose your size', sold:'Sold out', empty:'Your bag is empty', talla:'Size', quitar:'Remove', demo:'Sample item' }
+  };
+  const t = k => T[curLang()][k];
+  const imgFallback = "this.onerror=null;this.src='https://picsum.photos/seed/'+this.dataset.seed+'/700/900?grayscale'";
+
+  /* ----- estado de la bolsa (persistente) ----- */
+  let bag = [];
+  try { bag = JSON.parse(localStorage.getItem('sv_bag') || '[]'); } catch(e){ bag = []; }
+  const saveBag = () => { try { localStorage.setItem('sv_bag', JSON.stringify(bag)); } catch(e){} };
+
+  const el = id => document.getElementById(id);
+  const backdrop = el('shopBackdrop');
+
+  /* ----- grid ----- */
+  function renderGrid(){
+    const g = el('shopGrid'); if(!g) return;
+    g.innerHTML = PRODUCTS.map(p => `
+      <article class="shop-card group ${p.agotado?'is-sold':''}" data-open="${p.id}">
+        <div class="img-ph">
+          ${p.agotado?`<span class="shop-sold-badge">${t('sold')}</span>`:''}
+          <img data-seed="${p.id}" src="${p.foto}" alt="${p.nombre}" onerror="${imgFallback}"/>
+        </div>
+        <div class="mt-3 flex items-start justify-between gap-3">
+          <div>
+            <p class="text-[10px] tracking-[0.2em] uppercase text-leather">${p.categoria}</p>
+            <h3 class="font-serif text-lg leading-tight text-ink">${p.nombre}</h3>
+          </div>
+          <span class="font-serif text-lg text-ink whitespace-nowrap">${money(p.precio)}</span>
+        </div>
+      </article>`).join('');
+    g.querySelectorAll('[data-open]').forEach(c => c.addEventListener('click', () => openPDP(c.dataset.open)));
+  }
+
+  /* ----- overlays ----- */
+  let selSize = null;
+  function anyOpen(){ return document.querySelector('.pdp-panel.is-open, .bag-panel.is-open, .co-panel.is-open'); }
+  function showBackdrop(on){ backdrop.classList.toggle('is-open', on); if(on && window.__lenis) window.__lenis.stop(); if(!on && window.__lenis) window.__lenis.start(); }
+  function closeAll(){ document.querySelectorAll('.pdp-panel,.bag-panel,.co-panel').forEach(p=>p.classList.remove('is-open')); showBackdrop(false); }
+
+  function openPDP(id){
+    const p = byId(id); if(!p) return; selSize = null;
+    el('pdpBody').innerHTML = `
+      <div class="img-ph aspect-[3/4] md:aspect-auto"><img data-seed="${p.id}" src="${p.foto}" alt="${p.nombre}" onerror="${imgFallback}"/></div>
+      <div class="p-7 md:p-10 flex flex-col">
+        <p class="text-[11px] tracking-[0.25em] uppercase text-leather mb-2">${p.categoria}</p>
+        <h3 class="font-serif text-4xl leading-none text-ink mb-3">${p.nombre}</h3>
+        <p class="font-serif text-2xl text-sangre mb-1">${money(p.precio)}</p>
+        <p class="shop-demo-tag mb-6">${t('demo')}</p>
+        <p class="text-[12px] tracking-[0.2em] uppercase text-ink/60 mb-3">${p.agotado? t('sold') : t('talla')}</p>
+        <div id="pdpSizes" class="flex flex-wrap gap-2 mb-8">
+          ${p.agotado?'' : p.tallas.map(s=>`<button class="size-btn hoverable" data-size="${s}">${s}</button>`).join('')}
+        </div>
+        <button id="pdpAdd" class="mt-auto w-full bg-ink text-paper py-4 text-[12px] tracking-[0.2em] uppercase hover:bg-sangre transition-colors hoverable disabled:opacity-40 disabled:cursor-not-allowed" ${p.agotado?'disabled':''}>
+          ${p.agotado? t('sold') : t('add')}
+        </button>
+      </div>`;
+    const sizes = el('pdpSizes');
+    sizes && sizes.querySelectorAll('[data-size]').forEach(b => b.addEventListener('click', () => {
+      selSize = b.dataset.size;
+      sizes.querySelectorAll('[data-size]').forEach(x=>x.classList.remove('sel'));
+      b.classList.add('sel');
+    }));
+    const add = el('pdpAdd');
+    add && !p.agotado && add.addEventListener('click', () => {
+      if(!selSize){ el('pdpSizes').classList.add('animate-pulse'); setTimeout(()=>el('pdpSizes').classList.remove('animate-pulse'),700); return; }
+      addToBag(p.id, selSize);
+      el('pdpPanel').classList.remove('is-open');
+      openBag();
+    });
+    el('pdpPanel').classList.add('is-open'); showBackdrop(true);
+  }
+
+  function addToBag(id, size){
+    const line = bag.find(b => b.id===id && b.size===size);
+    if(line) line.qty++; else bag.push({ id, size, qty:1 });
+    saveBag(); updateCount();
+  }
+  function setQty(i, d){ bag[i].qty += d; if(bag[i].qty<=0) bag.splice(i,1); saveBag(); updateCount(); renderBag(); }
+
+  function subtotal(){ return bag.reduce((s,b)=>{ const p=byId(b.id); return s + (p?p.precio*b.qty:0); },0); }
+  function updateCount(){
+    const n = bag.reduce((s,b)=>s+b.qty,0);
+    const c = el('bagCount'); if(c){ c.textContent = n; c.style.display = n?'grid':'none'; }
+    const go = el('goCheckout'); if(go) go.disabled = n===0;
+  }
+
+  function renderBag(){
+    const box = el('bagItems');
+    if(!bag.length){ box.innerHTML = `<p class="text-ink/50 text-center py-16">${t('empty')}</p>`; el('bagSubtotal').textContent = money(0); return; }
+    box.innerHTML = bag.map((b,i)=>{ const p=byId(b.id); if(!p) return ''; return `
+      <div class="flex gap-4 py-4 border-b border-ink/10">
+        <div class="img-ph w-20 h-24 shrink-0"><img data-seed="${p.id}" src="${p.foto}" alt="" onerror="${imgFallback}"/></div>
+        <div class="flex-1">
+          <h4 class="font-serif text-lg text-ink leading-tight">${p.nombre}</h4>
+          <p class="text-[11px] tracking-[0.14em] uppercase text-ink/55 mt-1">${t('talla')}: ${b.size}</p>
+          <div class="flex items-center justify-between mt-3">
+            <div class="flex items-center border border-ink/25">
+              <button class="w-8 h-8 hoverable" data-qty="${i}" data-d="-1">−</button>
+              <span class="w-8 text-center text-sm">${b.qty}</span>
+              <button class="w-8 h-8 hoverable" data-qty="${i}" data-d="1">+</button>
+            </div>
+            <span class="font-serif text-lg text-ink">${money(p.precio*b.qty)}</span>
+          </div>
+          <button class="text-[11px] tracking-[0.14em] uppercase text-sangre mt-2 hoverable" data-remove="${i}">${t('quitar')}</button>
+        </div>
+      </div>`; }).join('');
+    box.querySelectorAll('[data-qty]').forEach(b=>b.addEventListener('click',()=>setQty(+b.dataset.qty, +b.dataset.d)));
+    box.querySelectorAll('[data-remove]').forEach(b=>b.addEventListener('click',()=>{ bag.splice(+b.dataset.remove,1); saveBag(); updateCount(); renderBag(); }));
+    el('bagSubtotal').textContent = money(subtotal());
+  }
+  function openBag(){ renderBag(); closeAllPanelsOnly(); el('bagPanel').classList.add('is-open'); showBackdrop(true); }
+  function closeAllPanelsOnly(){ document.querySelectorAll('.pdp-panel,.bag-panel,.co-panel').forEach(p=>p.classList.remove('is-open')); }
+
+  function openCheckout(){
+    if(!bag.length) return;
+    el('coItems').innerHTML = bag.map(b=>{ const p=byId(b.id); if(!p) return ''; return `
+      <div class="flex items-center justify-between gap-3 text-sm">
+        <span class="text-ink/75">${p.nombre} · ${b.size} ×${b.qty}</span>
+        <span class="font-serif text-ink whitespace-nowrap">${money(p.precio*b.qty)}</span>
+      </div>`; }).join('');
+    el('coTotal').textContent = money(subtotal());
+    closeAllPanelsOnly(); el('coPanel').classList.add('is-open'); showBackdrop(true);
+  }
+
+  /* ----- wiring ----- */
+  el('bagBtn').addEventListener('click', openBag);
+  el('goCheckout').addEventListener('click', openCheckout);
+  backdrop.addEventListener('click', closeAll);
+  document.querySelectorAll('[data-shopclose]').forEach(b=>b.addEventListener('click', closeAll));
+  document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeAll(); });
+
+  /* placeholders bilingües del checkout */
+  function applyPh(){ const l=curLang(); document.querySelectorAll('[data-es-ph]').forEach(i=>{ const v=i.getAttribute('data-'+l+'-ph'); if(v!=null) i.placeholder=v; }); }
+  document.querySelectorAll('[data-langtoggle]').forEach(b=>b.addEventListener('click', ()=>setTimeout(()=>{ applyPh(); if(el('pdpPanel').classList.contains('is-open')){} renderBag(); },20)));
+
+  renderGrid(); updateCount(); applyPh();
+})();
+</script>
 
 <script>
   /* ---------- Image fallback ---------- */
